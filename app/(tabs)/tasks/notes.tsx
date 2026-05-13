@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
-import { View, FlatList, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
-import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { getNotesDB, deleteNoteDB } from './database/db';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { deleteNoteDB, getNotesDB } from '../../database/db';
 
 export default function NotesList() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function NotesList() {
             deleteNoteDB(id);
             loadNotes();
           },
-          style: "destructive" // Makes the text red on iOS
+          style: "destructive" 
         }
       ]
     );
@@ -63,7 +63,7 @@ export default function NotesList() {
             <View style={styles.actionRow}>
               <TouchableOpacity 
                 style={styles.viewButton} 
-                onPress={() => router.push({ pathname: "/detail", params: item })}
+                onPress={() => router.push({ pathname: "./detail", params: item })}
               >
                 <Ionicons name="eye-outline" size={18} color="#f4511e" />
                 <Text style={styles.viewButtonText}>View Details</Text>
@@ -80,7 +80,7 @@ export default function NotesList() {
           </View>
         )}
       />
-      <TouchableOpacity style={styles.fab} onPress={() => router.push('/add')}>
+      <TouchableOpacity style={styles.fab} onPress={() => router.push('./add')}>
         <Ionicons name="add" size={35} color="white" />
       </TouchableOpacity>
     </View>

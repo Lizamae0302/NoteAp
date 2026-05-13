@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { updateNoteDB } from './database/db'; 
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { updateNoteDB } from '../../database/db';
 
 export default function Detail() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function Detail() {
     );
 
     Alert.alert("Success", "Task updated!");
-    setIsEditing(false); // Switch back to view mode after saving
+    setIsEditing(false); 
     router.back();
   };
 

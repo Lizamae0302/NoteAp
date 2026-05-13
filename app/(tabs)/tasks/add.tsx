@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { addNoteDB } from './database/db';
+import { useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { addNoteDB } from '../../database/db';
 
 export default function AddNote() {
   const [title, setTitle] = useState('');
