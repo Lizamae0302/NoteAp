@@ -2,16 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { updateNoteDB } from '../../database/db';
+import { updateNoteDB } from '../../../lib/db';
 
 export default function Detail() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
-  // 1. Setup Edit Mode Toggle
   const [isEditing, setIsEditing] = useState(false);
-
-  // 2. Setup States for all fields
   const [title, setTitle] = useState(String(params.title || ""));
   const [category, setCategory] = useState(String(params.category || ""));
   const [content, setContent] = useState(String(params.content || ""));
@@ -19,15 +16,7 @@ export default function Detail() {
 
   const handleUpdateMemo = () => {
     if (!title.trim()) return Alert.alert("Wait!", "Title cannot be empty.");
-
-    updateNoteDB(
-      Number(params.id),
-      title.trim(),
-      category.trim(),
-      content.trim(),
-      currentStatus
-    );
-
+    updateNoteDB(Number(params.id), title.trim(), category.trim(), content.trim(), currentStatus);
     Alert.alert("Success", "Task updated!");
     setIsEditing(false); 
     router.back();
@@ -36,8 +25,6 @@ export default function Detail() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.card}>
-        
-        {/* Header with Edit Toggle */}
         <View style={styles.headerRow}>
           <Text style={styles.label}>Note Task Details</Text>
           <TouchableOpacity 
@@ -45,68 +32,36 @@ export default function Detail() {
             onPress={() => setIsEditing(!isEditing)}
           >
             <Ionicons name={isEditing ? "eye-outline" : "create-outline"} size={18} color={isEditing ? "#fff" : "#f4511e"} />
-            <Text style={[styles.editToggleText, isEditing && {color: '#fff'}]}>
-              {isEditing ? "Viewing" : "Edit Note Task"}
-            </Text>
+            <Text style={[styles.editToggleText, isEditing && {color: '#fff'}]}>{isEditing ? "Viewing" : "Edit Note Task"}</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Title Section */}
         <Text style={styles.fieldLabel}>Title</Text>
-        <TextInput 
-          style={[styles.titleInput, !isEditing && styles.readOnlyInput]} 
-          value={title} 
-          onChangeText={setTitle}
-          editable={isEditing}
-          placeholder="Title"
-        />
-        
+        <TextInput style={[styles.titleInput, !isEditing && styles.readOnlyInput]} value={title} onChangeText={setTitle} editable={isEditing} />
         <View style={styles.divider} />
         
-        {/* Category Section */}
         <Text style={styles.fieldLabel}>Category</Text>
-        <TextInput 
-          style={[styles.categoryInput, !isEditing && styles.readOnlyInput]} 
-          value={category} 
-          onChangeText={setCategory}
-          editable={isEditing}
-        />
-        
+        <TextInput style={[styles.categoryInput, !isEditing && styles.readOnlyInput]} value={category} onChangeText={setCategory} editable={isEditing} />
         <View style={styles.divider} />
 
-        {/* Status Section */}
         <Text style={styles.fieldLabel}>Status</Text>
         <View style={styles.statusRow}>
           {['Pending', 'Ongoing', 'Finished'].map((s) => (
             <TouchableOpacity 
               key={s} 
               disabled={!isEditing}
-              style={[
-                styles.statusBtn, 
-                currentStatus === s ? styles.statusBtnActive : styles.statusBtnInactive,
-                !isEditing && currentStatus !== s && { opacity: 0.3 }
-              ]}
+              style={[styles.statusBtn, currentStatus === s ? styles.statusBtnActive : styles.statusBtnInactive, !isEditing && currentStatus !== s && { opacity: 0.3 }]}
               onPress={() => setCurrentStatus(s)}
             >
               <Text style={[styles.statusBtnText, currentStatus === s && styles.statusBtnTextActive]}>{s}</Text>
             </TouchableOpacity>
           ))}
         </View>
-
         <View style={styles.divider} />
         
-        {/* Details Section */}
         <Text style={styles.fieldLabel}>Details</Text>
-        <TextInput 
-          style={[styles.contentInput, !isEditing && styles.readOnlyInput]} 
-          multiline 
-          value={content} 
-          onChangeText={setContent}
-          editable={isEditing}
-          textAlignVertical="top"
-        />
+        <TextInput style={[styles.contentInput, !isEditing && styles.readOnlyInput]} multiline value={content} onChangeText={setContent} editable={isEditing} textAlignVertical="top" />
         
-        {/* Conditional Footer Buttons */}
         {isEditing ? (
           <TouchableOpacity style={styles.saveButton} onPress={handleUpdateMemo}>
             <Text style={styles.saveText}>Save Changes</Text>

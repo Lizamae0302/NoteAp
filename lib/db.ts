@@ -4,7 +4,7 @@ export const db = SQLite.openDatabaseSync('notes.db');
 
 export const initDB = () => {
   try {
-     db.execSync(`DROP TABLE IF EXISTS notes;`); // Uncomment if status column is missing
+    // db.execSync(`DROP TABLE IF EXISTS notes;`); 
     db.execSync(`
       CREATE TABLE IF NOT EXISTS notes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

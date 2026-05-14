@@ -16,7 +16,7 @@ export default function Home() {
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => router.push('./tasks/notes')}
+          onPress={() => router.push('/tasks/notes')}
           activeOpacity={0.8}
         >
           <Text style={styles.buttonText}>View My Notes</Text>

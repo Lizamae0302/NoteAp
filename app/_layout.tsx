@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
-import { initDB } from './database/db';
+import { initDB } from '../lib/db';
 
 export default function Layout() {
   useEffect(() => {

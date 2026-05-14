@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { deleteNoteDB, getNotesDB } from '../../database/db';
+import { deleteNoteDB, getNotesDB } from '../../../lib/db';
 
 export default function NotesList() {
   const router = useRouter();
@@ -21,27 +21,11 @@ export default function NotesList() {
     return '#f4511e';
   };
 
-  // Function to handle the delete confirmation
   const confirmDelete = (id: number) => {
-    Alert.alert(
-      "Delete Note", // Title
-      "Do you really want to delete this note?", // Message
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { 
-          text: "Delete", 
-          onPress: () => {
-            deleteNoteDB(id);
-            loadNotes();
-          },
-          style: "destructive" 
-        }
-      ]
-    );
+    Alert.alert("Delete Note", "Do you really want to delete this note?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Delete", onPress: () => { deleteNoteDB(id); loadNotes(); }, style: "destructive" }
+    ]);
   };
 
   return (
@@ -63,24 +47,20 @@ export default function NotesList() {
             <View style={styles.actionRow}>
               <TouchableOpacity 
                 style={styles.viewButton} 
-                onPress={() => router.push({ pathname: "./detail", params: item })}
+                onPress={() => router.push({ pathname: "/tasks/detail", params: item })}
               >
                 <Ionicons name="eye-outline" size={18} color="#f4511e" />
                 <Text style={styles.viewButtonText}>View Details</Text>
               </TouchableOpacity>
 
-              {/* Trash Icon with confirmation alert */}
-              <TouchableOpacity 
-                onPress={() => confirmDelete(item.id)} 
-                style={styles.trashIcon}
-              >
+              <TouchableOpacity onPress={() => confirmDelete(item.id)} style={styles.trashIcon}>
                 <Ionicons name="trash-outline" size={20} color="#f4511e" />
               </TouchableOpacity>
             </View>
           </View>
         )}
       />
-      <TouchableOpacity style={styles.fab} onPress={() => router.push('./add')}>
+      <TouchableOpacity style={styles.fab} onPress={() => router.push('/tasks/add')}>
         <Ionicons name="add" size={35} color="white" />
       </TouchableOpacity>
     </View>
